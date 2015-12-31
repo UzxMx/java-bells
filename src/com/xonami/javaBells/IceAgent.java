@@ -109,6 +109,7 @@ public class IceAgent {
 				IceMediaStream ims = agent.getStream(name);
 				if (ims != null) {
 					for (IceUdpTransportPacketExtension tpe : contentpe.getChildExtensionsOfType(IceUdpTransportPacketExtension.class)) {
+						System.out.println("IceUdpTransportPacketExtension");
 						System.out.println( "\t" + tpe );
 						if (tpe.getPassword() != null)
 							ims.setRemotePassword(tpe.getPassword());
@@ -116,6 +117,7 @@ public class IceAgent {
 							ims.setRemoteUfrag(tpe.getUfrag());
 
 						List<CandidatePacketExtension> candidates = tpe.getChildExtensionsOfType(CandidatePacketExtension.class);
+						System.out.println("candidates size: " + candidates.size());
 						if (candidates == null || candidates.size() == 0)
 							continue;
 						// Sorts the remote candidates (host < reflexive <
@@ -130,6 +132,7 @@ public class IceAgent {
 							if (cpe.getGeneration() != agent.getGeneration())
 								continue;
 							InetAddress ia;
+							System.out.println("ip: " + cpe.getIP());
 							try {
 								ia = InetAddress.getByName(cpe.getIP());
 							} catch (UnknownHostException uhe) {
@@ -165,6 +168,7 @@ public class IceAgent {
 	}
 	
 	public void startConnectivityEstablishment() {
+		System.out.println("start connectivity establishment");
 		agent.startConnectivityEstablishment();
 	}
 	
@@ -204,6 +208,7 @@ public class IceAgent {
 					candidate.setNetwork(0); //FIXME: we need to identify the network card properly.
 					TransportAddress ta = can.getTransportAddress();
 					candidate.setIP( ta.getHostAddress() );
+					System.out.println("ta host address: " + ta.getHostAddress());
 					candidate.setPort( ta.getPort() );
 					candidate.setPriority(can.getPriority());
 					candidate.setProtocol(can.getTransport().toString());

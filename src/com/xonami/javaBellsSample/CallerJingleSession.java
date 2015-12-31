@@ -85,6 +85,7 @@ public class CallerJingleSession extends DefaultJingleSession implements Propert
 		System.out.println( "-------------- Caller - Agent Property Change - -----------------" );
 		
         if(agent.getState() == IceProcessingState.COMPLETED) {
+            System.out.println("IceProcessingState.completed");
             List<IceMediaStream> streams = agent.getStreams();
 
             //////////

@@ -3,6 +3,7 @@
 		Builds Java Bells, a Jingle jibrary for java.
 	</description>
 	<property name="src" location="src" />
+	<property name="src.ice4j" location="ice4j_src/main/java" />
 	<property name="build" location="build" />
 	<property name="target" location="target" />
 	<property file="passwords.props" />
@@ -20,12 +21,27 @@
 		<mkdir dir="${build}" />
 	</target>
 
-	<target name="compile" depends="init">
-		<javac srcdir="${src}" debug="true" debuglevel="lines,source" destdir="${build}" source="1.6" target="1.6" includeantruntime="false"
-			classpath="${classpath}:${jars}" />
+	<target name="resource">
+	        <copy todir="${build}">
+	            <fileset dir="${src}">
+	            	<include name="logging.properties" />
+	            	</fileset>
+	            </copy>
 	</target>
 
-	<target name="test" depends="compile">
+	<target name="compile" depends="init">
+	        <condition property="compile.javac.exclude.name" value="**/jdk8/**">
+	            <not>
+	                <matches string="${java.runtime.version}" pattern="^1\.8(\..*)?$"/>
+	            </not>
+	        </condition>
+		<javac srcdir="${src};${src.ice4j}" debug="true" debuglevel="lines,source" destdir="${build}" source="1.6" target="1.6" includeantruntime="false"
+			classpath="${classpath}:${jars}">
+			<exclude name="${compile.javac.exclude.name}"/>
+		</javac>
+	</target>
+
+	<target name="test" depends="compile,resource">
 		<java classname="com.xonami.javaBellsSample.JavaBellsSample" fork="true" dir="." classpath="${classpath}:${jars}:${build}">
 			<arg value="JavaBellsSample" />
 			<arg value="CALL_AND_ANSWER" />
@@ -36,7 +52,7 @@
 		</java>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jar" depends="compile,resource">
 		<jar destfile="${target}/java-bells-no-deps.jar" basedir="${build}" includes="**" />
 		<jar destfile="${target}/java-bells-with-deps.jar">
 			<fileset dir="${build}"/>
@@ -53,7 +69,7 @@
 		</jar>
 	</target>
 
-	<target name="testanswer" depends="compile">
+	<target name="testanswer" depends="compile,resource">
 		<java classname="com.xonami.javaBellsSample.JavaBellsSample" fork="true" dir="." classpath="${classpath}:${jars}:${build}">
 			<arg value="JavaBellsSample" />
 			<arg value="ANSWER" />
@@ -64,7 +80,7 @@
 		</java>
 	</target>
 
-	<target name="testcall" depends="compile">
+	<target name="testcall" depends="compile,resource">
 		<java classname="com.xonami.javaBellsSample.JavaBellsSample" fork="true" dir="." classpath="${classpath}:${jars}:${build}">
 			<arg value="JavaBellsSample" />
 			<arg value="CALL" />
@@ -75,7 +91,7 @@
 		</java>
 	</target>
 
-	<target name="testanswer2" depends="compile">
+	<target name="testanswer2" depends="compile,resource">
 		<java classname="com.xonami.javaBellsSample.JavaBellsSample2" fork="true" dir="." classpath="${classpath}:${jars}:${build}">
 			<arg value="JavaBellsSample2" />
 			<arg value="ANSWER" />
@@ -86,7 +102,7 @@
 		</java>
 	</target>
 
-	<target name="testcall2" depends="compile">
+	<target name="testcall2" depends="compile,resource">
 		<java classname="com.xonami.javaBellsSample.JavaBellsSample2" fork="true" dir="." classpath="${classpath}:${jars}:${build}">
 			<arg value="JavaBellsSample2" />
 			<arg value="CALL" />
@@ -97,7 +113,7 @@
 		</java>
 	</target>
 
-	<target name="testcallout" depends="compile">
+	<target name="testcallout" depends="compile,resource">
 		<java classname="com.xonami.javaBellsSample.JavaBellsCallerSample" fork="true" dir="." classpath="${classpath}:${jars}:${build}">
 			<arg value="JavaBellsCallerSample" />
 			<arg value="${username}" />

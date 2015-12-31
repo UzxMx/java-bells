@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JingleIQ;
+
+import org.ice4j.StackProperties;
 import org.jitsi.service.libjitsi.LibJitsi;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketListener;
@@ -18,13 +20,12 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
-
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xonami.javaBells.JingleManager;
+
 import org.jivesoftware.smackx.entitycaps.EntityCapsManager;
 
 /**
@@ -67,6 +68,8 @@ public class JavaBellsCallerSample {
 				logger.error("Uncaught Exception: ", e);
 			}
 		}) ;
+		
+		System.setProperty(StackProperties.DISABLE_IPv6, "true");
 		
 		// reduce the insane, unreadable amount of chattiness from libjitsi and ice4j:
 		java.util.logging.Logger l = java.util.logging.Logger.getLogger("");

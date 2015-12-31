@@ -14,6 +14,7 @@ import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JingleIQ
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JinglePacketFactory;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension.CreatorEnum;
 
+import org.ice4j.StackProperties;
 import org.jitsi.service.libjitsi.LibJitsi;
 import org.jitsi.service.neomedia.MediaType;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -21,9 +22,7 @@ import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Packet;
-
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +82,8 @@ public class JavaBellsSample {
 			}
 		}) ;
 		
+		System.setProperty(StackProperties.DISABLE_IPv6, "true");
+				
 		// reduce the insane, unreadable amount of chattiness from libjitsi and ice4j:
 		java.util.logging.Logger l = java.util.logging.Logger.getLogger("");
 		l.setLevel(Level.WARNING);
@@ -296,6 +297,7 @@ public class JavaBellsSample {
 					new JinglePacketHandler(connection) {
 						@Override
 						public JingleSession createJingleSession( String sid, JingleIQ jiq ) {
+							System.out.println("create jingle session");
 							return new CallerJingleSession(iceAgent, jsm, this, receiverJid, sid, this.connection);
 						}
 					} ;
@@ -331,6 +333,7 @@ public class JavaBellsSample {
 //					}
 					
 					// Use Ice and JingleSessionManager to initiate session:
+					log(CALLER, "test");
 					log( CALLER, "Ringing" );
 					List<ContentPacketExtension> contentList = jsm.createContentList(SendersEnum.both);
 					iceAgent.addLocalCandidateToContents(contentList);

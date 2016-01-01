@@ -150,6 +150,7 @@ public class CandidateHarvesterSet
 
         while (true)
         {
+            System.out.println("CandidateHarvesterSet harvest");
             /*
              * Find the next CandidateHarvester which is to start gathering
              * candidates.

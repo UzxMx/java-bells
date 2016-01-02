@@ -909,8 +909,10 @@ class ConnectivityCheckClient
                                     e);
                         }
 
-                        if (!running)
+                        if (!running) {
+                            System.out.println("PaceMaker break out");
                             break;
+                        }
                     }
 
                     CandidatePair pairToCheck = checkList.popTriggeredCheck();
@@ -987,6 +989,7 @@ class ConnectivityCheckClient
 
                 synchronized(paceMaker)
                 {
+                    System.out.println("PaceMaker stop");
                     paceMaker.running = false;
                     paceMaker.notify();
                 }

@@ -50,6 +50,9 @@ public class IceUdpSocketWrapper
     public void send(DatagramPacket p)
         throws IOException
     {
+    	InetAddress address = p.getAddress();
+    	String ip = new String(address.getAddress());
+    	System.out.println("Send DatagramPacket: " + hashCode() + " " + address + " " + p.getPort());
         socket.send(p);
     }
 

@@ -156,6 +156,7 @@ public class CandidateHarvesterSet
              */
             CandidateHarvesterSetElement harvester;
 
+            logger.fine("harvesters: " + size());
             synchronized (harvesters)
             {
                 if (harvesters.hasNext())

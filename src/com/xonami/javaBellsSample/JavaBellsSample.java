@@ -4,9 +4,11 @@
 package com.xonami.javaBellsSample;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension.SendersEnum;
@@ -71,6 +73,20 @@ public class JavaBellsSample {
 	}
 
 	public static void main(String[] args) {
+		InputStream inputStream = JavaBellsSample.class.getResourceAsStream("/logging.properties");
+		try {
+			LogManager.getLogManager().readConfiguration(inputStream);
+		} catch (SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		java.util.logging.Logger l = java.util.logging.Logger.getLogger(JavaBellsSample.class.getName());
+		l.warning("warning");
+		
 		if( args.length != 5 )
 			usage(args[0]);
 		
@@ -85,9 +101,6 @@ public class JavaBellsSample {
 		System.setProperty(StackProperties.DISABLE_IPv6, "true");
 				
 		// reduce the insane, unreadable amount of chattiness from libjitsi and ice4j:
-		java.util.logging.Logger l = java.util.logging.Logger.getLogger("");
-		l.setLevel(Level.WARNING);
-		
 		// -- libjitsi needs to be started
 		LibJitsi.start();
 		

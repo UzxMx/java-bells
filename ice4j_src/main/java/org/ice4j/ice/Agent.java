@@ -480,6 +480,7 @@ public class Agent
         //in case we are not trickling, apply other harvesters here
         if(!isTrickling())
         {
+        	logger.fine("harvesters harvest");
             harvestingStarted = true; //raise a flag to warn on a second call.
             harvesters.harvest(component);
         }
@@ -2376,6 +2377,7 @@ public class Agent
      */
     public void setTrickling(boolean trickle)
     {
+    	logger.fine("setTrickling: " + trickle);
         this.trickle = trickle;
     }
 

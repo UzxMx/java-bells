@@ -141,8 +141,10 @@ public class ReceiverJingleSession extends DefaultJingleSession implements Prope
 			System.out.println("Remote Candidate: " + agent.getSelectedRemoteCandidate(s));
 		}
 		System.out.println("\n\n++++++++++++++++++++++++++++\n\n");
-		System.out.println("Ready to talk");
-		talk(agent);
+		if (agent.getState() == IceProcessingState.COMPLETED) {
+			System.out.println("Ready to talk");
+			talk(agent);
+		}
 //		if (agent.getState() == IceProcessingState.COMPLETED) {
 //			try {
 //				for( String s : iceAgent.getStreamNames() ) {

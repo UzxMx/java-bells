@@ -65,15 +65,24 @@ public class IceAgent {
 		if( controling )
 			agent.setNominationStrategy(NominationStrategy.NOMINATE_HIGHEST_PRIO);
 		
+		TransportAddress ta = new TransportAddress("123.57.45.87", 3478, Transport.UDP);
+
 		//stun and turn
-		if( sta.stunAddresses != null )
-			for( TransportAddress ta : sta.stunAddresses )
-				agent.addCandidateHarvester(new StunCandidateHarvester(ta) );
+		// if( sta.stunAddresses != null )
+		// 	for( TransportAddress ta : sta.stunAddresses ) {
+		// 		System.out.println("stunAddresse: " + ta.toString());
+		// 		agent.addCandidateHarvester(new StunCandidateHarvester(ta) );
+		// 	}
+		agent.addCandidateHarvester(new StunCandidateHarvester(ta));
+				
 		
 		//LongTermCredential ltr = new LongTermCredential("1234", "abcd" ); //generateNonce(5), generateNonce(15));
-		if( sta.turnAddresses != null )
-			for( TransportAddress ta : sta.turnAddresses )
-				agent.addCandidateHarvester(new TurnCandidateHarvester(ta) );
+		// if( sta.turnAddresses != null )
+		// 	for( TransportAddress ta : sta.turnAddresses ) {
+		// 		System.out.println("turnAddress:" + ta.toString());
+		// 		agent.addCandidateHarvester(new TurnCandidateHarvester(ta) );
+		// 	}
+		agent.addCandidateHarvester(new TurnCandidateHarvester(ta));
 	}
 	public void createStreams( Collection<String> streamnames ) throws IOException {
 		for( String s : streamnames ) {

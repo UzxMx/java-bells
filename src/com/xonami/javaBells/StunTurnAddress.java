@@ -51,7 +51,7 @@ public class StunTurnAddress {
 	protected StunTurnAddress( String[] hosts ) {
 		this.hosts = hosts;
 		
-		startAddressFetch();
+		// startAddressFetch();
 	}
 	
 	private synchronized void completeAddressFetch() {
@@ -64,60 +64,59 @@ public class StunTurnAddress {
 	}
 
 	private synchronized void startAddressFetch() {
-		if( addressFetchThread != null )
-			return;
-		addressFetchThread = new Thread() {
-			@Override
-			public void run() {
-				Record[] stunRecords = null;
-				Record[] turnRecords = null;
-				for( int i=0; i<hosts.length; ++i ) {
-					String stunQuery = "_stun._udp." + hosts[i] ;
-					String turnQuery = "_turn._udp." + hosts[i] ;
-					
-					try {
-						if( stunRecords == null )
-							stunRecords = lookupSrv( stunQuery );
-						if( turnRecords == null )
-							turnRecords = lookupSrv( turnQuery );
-						if( stunRecords != null && turnRecords != null )
-							break;
-					} catch( TextParseException tpe ) {
-						throw new RuntimeException( tpe );
-					}
-				}
-				if( stunRecords == null ) {
-					stunAddresses = null ;
-				} else {
-					stunAddresses = new TransportAddress[stunRecords.length];
-					for( int i=0; i<stunRecords.length; ++i ) {
-						SRVRecord srv = (SRVRecord) stunRecords[i] ;
-						stunAddresses[i] = new TransportAddress(srv.getTarget().toString().replaceFirst("\\.$", ""), srv.getPort(), Transport.UDP);
-					}
-				}
-				if( turnRecords == null ) {
-					turnAddresses = null ;
-				} else {
-					turnAddresses = new TransportAddress[stunRecords.length];
-					for( int i=0; i<turnAddresses.length; ++i ) {
-						SRVRecord srv = (SRVRecord) turnRecords[i] ;
-						turnAddresses[i] = new TransportAddress(srv.getTarget().toString().replaceFirst("\\.$", ""), srv.getPort(), Transport.UDP);
-					}
-				}
+		Record[] stunRecords = null;
+		Record[] turnRecords = null;
+		for( int i=0; i<hosts.length; ++i ) {
+			System.out.println("startAddressFetch:" + hosts[i]);
+			String stunQuery = "_stun._udp." + hosts[i] ;
+			String turnQuery = "_turn._udp." + hosts[i] ;
+			
+			try {
+				if( stunRecords == null )
+					stunRecords = lookupSrv( stunQuery );
+				if( turnRecords == null )
+					turnRecords = lookupSrv( turnQuery );
+				if( stunRecords != null && turnRecords != null )
+					break;
+			} catch( TextParseException tpe ) {
+				throw new RuntimeException( tpe );
 			}
+		}
+		if( stunRecords == null ) {
+			stunAddresses = null ;
+			System.out.println("stunRecords is null");
+		} else {
+			System.out.println("stunRecords not null");
+			stunAddresses = new TransportAddress[stunRecords.length];
+			for( int i=0; i<stunRecords.length; ++i ) {
+				SRVRecord srv = (SRVRecord) stunRecords[i] ;
+				System.out.println("SRVRecord: " + srv.getTarget().toString());
+				stunAddresses[i] = new TransportAddress(srv.getTarget().toString().replaceFirst("\\.$", ""), srv.getPort(), Transport.UDP);
+			}
+		}
+		if( turnRecords == null ) {
+			turnAddresses = null ;
+			System.out.println("turnRecords is null");
+		} else {
+			System.out.println("turnRecords not null");
+			turnAddresses = new TransportAddress[stunRecords.length];
+			for( int i=0; i<turnAddresses.length; ++i ) {
+				SRVRecord srv = (SRVRecord) turnRecords[i] ;
+				System.out.println("SRVRecord: " + srv.getTarget().toString());
+				turnAddresses[i] = new TransportAddress(srv.getTarget().toString().replaceFirst("\\.$", ""), srv.getPort(), Transport.UDP);
+			}
+		}
+	}
 
-			private Record[] lookupSrv(String query) throws TextParseException {
-				while( true ) {
-					try {
-						// Bug 6427854 causes this to sometimes throw an NPE
-						return new Lookup( query, Type.SRV ).run();
-					} catch( NullPointerException npe ) {
-						Thread.yield();
-					}
-				}
+	private Record[] lookupSrv(String query) throws TextParseException {
+		while( true ) {
+			try {
+				// Bug 6427854 causes this to sometimes throw an NPE
+				return new Lookup( query, Type.SRV ).run();
+			} catch( NullPointerException npe ) {
+				Thread.yield();
 			}
-		};
-		addressFetchThread.start();
+		}
 	}
 
 	/**

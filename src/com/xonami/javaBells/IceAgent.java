@@ -250,7 +250,7 @@ public class IceAgent {
 		IceMediaStream stream = agent.createMediaStream(name);
 		int rtpPort = getStreamPort();
 		agent.createComponent(stream, Transport.UDP, rtpPort, rtpPort, rtpPort+100);
-		agent.createComponent(stream, Transport.UDP, rtpPort+1, rtpPort+1, rtpPort+101);
+//		agent.createComponent(stream, Transport.UDP, rtpPort+1, rtpPort+1, rtpPort+101);
 	}
 
 	private static int getStreamPort() {

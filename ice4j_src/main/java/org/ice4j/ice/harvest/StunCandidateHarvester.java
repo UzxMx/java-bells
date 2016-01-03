@@ -302,6 +302,7 @@ public class StunCandidateHarvester
      */
     private void startResolvingCandidate(HostCandidate hostCand)
     {
+    	logger.info("startResolvingCandidate" + hostCand);
         //first of all, make sure that the STUN server and the Candidate
         //address are of the same type and that they can communicate.
         if (!hostCand.getTransportAddress().canReach(stunServer))

@@ -887,6 +887,7 @@ class ConnectivityCheckClient
         @Override
         public synchronized void run()
         {
+        	logger.info("CheckList size: " + checkList.size());
             try
             {
                 while(running)
@@ -910,7 +911,6 @@ class ConnectivityCheckClient
                         }
 
                         if (!running) {
-                            System.out.println("PaceMaker break out");
                             break;
                         }
                     }
@@ -919,8 +919,11 @@ class ConnectivityCheckClient
 
                     //if there are no triggered checks, go for an ordinary one.
                     if(pairToCheck == null) {
-                        System.out.println("getNextOrdinaryPairToCheck ");
                         pairToCheck = checkList.getNextOrdinaryPairToCheck();
+                        if (pairToCheck != null) {
+                        	logger.info("getNextOrdinaryPairToCheck: " + pairToCheck);
+                        	logger.info("CheckList size: " + checkList.size());
+                        }
                     }
 
                     if(pairToCheck != null)
@@ -934,7 +937,6 @@ class ConnectivityCheckClient
                          */
                         synchronized (pairToCheck)
                         {
-                            System.out.println("startCheckForPair");
                             TransactionID transactionID
                                 = startCheckForPair(pairToCheck);
 
@@ -956,7 +958,6 @@ class ConnectivityCheckClient
                          * its final state in either the processResponse(),
                          * processTimeout() or processFailure() method.
                          */
-                        System.out.println("will skip a check beat.");
                         checkList.fireEndOfOrdinaryChecks();
                     }
                 }

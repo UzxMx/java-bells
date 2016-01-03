@@ -14,6 +14,7 @@ import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JinglePa
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension.CreatorEnum;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.Reason;
 
+import org.ice4j.TransportAddress;
 import org.ice4j.ice.Agent;
 import org.ice4j.ice.CandidatePair;
 import org.ice4j.ice.Component;
@@ -168,6 +169,10 @@ public class ReceiverJingleSession extends DefaultJingleSession implements Prope
 		byte[] buf = str.getBytes();
 		DatagramPacket packet = new DatagramPacket(buf, buf.length);
 		try {
+			logger.info(rtpPair.toString());
+			TransportAddress ta = rtpPair.getRemoteCandidate().getTransportAddress();;
+			packet.setAddress(ta.getAddress());
+			packet.setPort(ta.getPort());
 			socket.send(packet);
 		} catch (IOException e) {
 			logger.severe("send failed");;

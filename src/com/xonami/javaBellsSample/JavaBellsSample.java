@@ -299,7 +299,7 @@ public class JavaBellsSample {
 					final IceAgent iceAgent = new IceAgent(true, sta);
 					// setup our jingle stream manager using the default audio and video devices:
 					final JingleStreamManager jsm = new JingleStreamManager(CreatorEnum.initiator);
-					jsm.addDefaultMedia(MediaType.VIDEO, "video");
+					//jsm.addDefaultMedia(MediaType.VIDEO, "video");
 					jsm.addDefaultMedia(MediaType.AUDIO, "audio");
 					// create ice streams that correspond to the jingle streams that we want
 					iceAgent.createStreams(jsm.getMediaNames());

@@ -112,16 +112,18 @@ public class CallerJingleSession extends DefaultJingleSession implements Propert
             }
             ////////////
             
-            try {
-            	for( String s : iceAgent.getStreamNames() ) {
-					jingleStream = jingleStreamManager.startStream(s, iceAgent);
-					jingleStream.quickShow(jingleStreamManager.getDefaultAudioDevice());
-				}
-            } catch( IOException ioe ) {
-            	System.out.println( "An io error occured when negotiating the call: " ) ;
-            	ioe.printStackTrace();
-            	System.exit(1);
-            }
+            System.out.println("Ready to talk");
+            
+//            try {
+//            	for( String s : iceAgent.getStreamNames() ) {
+//					jingleStream = jingleStreamManager.startStream(s, iceAgent);
+//					jingleStream.quickShow(jingleStreamManager.getDefaultAudioDevice());
+//				}
+//            } catch( IOException ioe ) {
+//            	System.out.println( "An io error occured when negotiating the call: " ) ;
+//            	ioe.printStackTrace();
+//            	System.exit(1);
+//            }
         } else if( agent.getState() == IceProcessingState.FAILED ) {
         	closeSession(Reason.CONNECTIVITY_ERROR);
         }

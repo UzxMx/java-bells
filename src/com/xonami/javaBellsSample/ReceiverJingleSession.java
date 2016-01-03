@@ -131,18 +131,19 @@ public class ReceiverJingleSession extends DefaultJingleSession implements Prope
 			System.out.println("Remote Candidate: " + agent.getSelectedRemoteCandidate(s));
 		}
 		System.out.println("\n\n++++++++++++++++++++++++++++\n\n");
-		if (agent.getState() == IceProcessingState.COMPLETED) {
-			try {
-				for( String s : iceAgent.getStreamNames() ) {
-					System.out.println( "For Stream : " + s );
-					jingleStream = jingleStreamManager.startStream(s, iceAgent);
-					jingleStream.quickShow(jingleStreamManager.getDefaultAudioDevice());
-				}
-			} catch (IOException ioe) {
-				ioe.printStackTrace(); // FIXME: deal with this.
-			}
-		} else if (agent.getState() == IceProcessingState.FAILED) {
-			closeSession(Reason.CONNECTIVITY_ERROR);
-		}
+		System.out.println("Ready to talk");
+//		if (agent.getState() == IceProcessingState.COMPLETED) {
+//			try {
+//				for( String s : iceAgent.getStreamNames() ) {
+//					System.out.println( "For Stream : " + s );
+//					jingleStream = jingleStreamManager.startStream(s, iceAgent);
+//					jingleStream.quickShow(jingleStreamManager.getDefaultAudioDevice());
+//				}
+//			} catch (IOException ioe) {
+//				ioe.printStackTrace(); // FIXME: deal with this.
+//			}
+//		} else if (agent.getState() == IceProcessingState.FAILED) {
+//			closeSession(Reason.CONNECTIVITY_ERROR);
+//		}
 	}
 }

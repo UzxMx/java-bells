@@ -72,7 +72,8 @@ public class StunClientTransaction
      * The number of milliseconds a client should wait before retransmitting,
      * after it has sent a request for the first time.
      */
-    public static final int DEFAULT_ORIGINAL_WAIT_INTERVAL = 100;
+//    public static final int DEFAULT_ORIGINAL_WAIT_INTERVAL = 100;
+    public static final int DEFAULT_ORIGINAL_WAIT_INTERVAL = 1000 * 20;
 
     /**
      * The pool of <tt>Thread</tt>s which retransmit

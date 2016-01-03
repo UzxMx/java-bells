@@ -3,7 +3,11 @@ package com.xonami.javaBellsSample;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.List;
+import java.util.logging.Logger;
+
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JingleIQ;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JinglePacketFactory;
@@ -11,6 +15,9 @@ import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentP
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.Reason;
 
 import org.ice4j.ice.Agent;
+import org.ice4j.ice.CandidatePair;
+import org.ice4j.ice.Component;
+import org.ice4j.ice.IceMediaStream;
 import org.ice4j.ice.IceProcessingState;
 import org.jivesoftware.smack.XMPPConnection;
 
@@ -33,6 +40,9 @@ import com.xonami.javaBells.StunTurnAddress;
  *
  */
 public class ReceiverJingleSession extends DefaultJingleSession implements PropertyChangeListener {
+	
+	private static final Logger logger = Logger.getLogger(ReceiverJingleSession.class.getName());
+	
 	private final String callerJid;
 	private IceAgent iceAgent;
 	private JingleStreamManager jingleStreamManager;
@@ -132,6 +142,7 @@ public class ReceiverJingleSession extends DefaultJingleSession implements Prope
 		}
 		System.out.println("\n\n++++++++++++++++++++++++++++\n\n");
 		System.out.println("Ready to talk");
+		talk(agent);
 //		if (agent.getState() == IceProcessingState.COMPLETED) {
 //			try {
 //				for( String s : iceAgent.getStreamNames() ) {
@@ -145,5 +156,19 @@ public class ReceiverJingleSession extends DefaultJingleSession implements Prope
 //		} else if (agent.getState() == IceProcessingState.FAILED) {
 //			closeSession(Reason.CONNECTIVITY_ERROR);
 //		}
+	}
+	
+	private void talk(Agent agent) {
+		IceMediaStream stream = agent.getStream("audio");
+		CandidatePair rtpPair = stream.getComponent(Component.RTP).getSelectedPair();
+		DatagramSocket socket = rtpPair.getDatagramSocket();
+		String str = "Message from anwser";
+		byte[] buf = str.getBytes();
+		DatagramPacket packet = new DatagramPacket(buf, buf.length);
+		try {
+			socket.send(packet);
+		} catch (IOException e) {
+			logger.severe("send failed");;
+		}
 	}
 }

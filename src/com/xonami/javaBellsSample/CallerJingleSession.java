@@ -3,16 +3,21 @@ package com.xonami.javaBellsSample;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.List;
+import java.util.logging.Logger;
 
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension.SendersEnum;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JingleIQ;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.Reason;
 
 import org.ice4j.ice.Agent;
+import org.ice4j.ice.CandidatePair;
 import org.ice4j.ice.Component;
 import org.ice4j.ice.IceMediaStream;
 import org.ice4j.ice.IceProcessingState;
+import org.ice4j.socket.IceSocketWrapper;
 import org.jivesoftware.smack.XMPPConnection;
 
 import com.xonami.javaBells.DefaultJingleSession;
@@ -31,6 +36,9 @@ import com.xonami.javaBells.JinglePacketHandler;
  *
  */
 public class CallerJingleSession extends DefaultJingleSession implements PropertyChangeListener {
+	
+	private static final Logger logger = Logger.getLogger(CallerJingleSession.class.getName());
+	
 	private final IceAgent iceAgent;
 	private final JingleStreamManager jingleStreamManager;
 	private JingleStream jingleStream;
@@ -113,6 +121,7 @@ public class CallerJingleSession extends DefaultJingleSession implements Propert
             ////////////
             
             System.out.println("Ready to talk");
+            talk(agent);
             
 //            try {
 //            	for( String s : iceAgent.getStreamNames() ) {
@@ -127,6 +136,21 @@ public class CallerJingleSession extends DefaultJingleSession implements Propert
         } else if( agent.getState() == IceProcessingState.FAILED ) {
         	closeSession(Reason.CONNECTIVITY_ERROR);
         }
+	}
+	
+	private void talk(Agent agent) {
+		IceMediaStream stream = agent.getStream("audio");
+		CandidatePair rtpPair = stream.getComponent(Component.RTP).getSelectedPair();
+		DatagramSocket socket = rtpPair.getDatagramSocket();
+		byte[] buf = new byte[1024];
+		DatagramPacket packet = new DatagramPacket(buf, buf.length);
+		try {
+			socket.receive(packet);
+			logger.info("From: " + packet.getAddress() + " " + packet.getPort());
+			logger.info("Message: " + new String(packet.getData()));
+		} catch (IOException e) {
+			logger.severe("receive failed");
+		}
 	}
 }
 

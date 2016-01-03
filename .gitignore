@@ -22,3 +22,9 @@ jmf.log
 
 #individual users should not commit their passwords. They should use the template and copy it to the passwords file.
 passwords.props
+
+test.txt
+*.log
+*~
+untitled.xml
+.ant-targets-build.xml

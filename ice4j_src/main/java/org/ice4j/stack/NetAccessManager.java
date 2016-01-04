@@ -563,6 +563,10 @@ class NetAccessManager
         throws IllegalArgumentException,
                IOException
     {
+        logger.finest("------Start sending message------");
+        logger.finest(srcAddr.getAddress() + ":" + srcAddr.getPort() + " -> " + remoteAddr.getAddress() + ":" + remoteAddr.getPort());
+        logger.finest(stunMessage.toString());
+        logger.finest("------end sending message------");
         sendMessage(stunMessage.encode(stunStack), srcAddr, remoteAddr);
     }
     

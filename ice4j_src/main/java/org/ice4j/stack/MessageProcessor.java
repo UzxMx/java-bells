@@ -151,9 +151,17 @@ class MessageProcessor
                         = Message.decode(rawMessage.getBytes(),
                                          (char) 0,
                                          (char) rawMessage.getMessageLength());
+                    
+                    logger.finest("------Received message------");
+                    TransportAddress localTa = rawMessage.getLocalAddress();
+                    TransportAddress remoteTa = rawMessage.getRemoteAddress();
+                    logger.finest(localTa.getAddress() + ":" + localTa.getPort() + " -> " + remoteTa.getAddress() + ":" + remoteTa.getPort());
+                    logger.finest(stunMessage.toString());
+                    logger.finest("------end received message------");
                 }
                 catch (StunException ex)
                 {
+                	logger.severe("Failed to decode a stun message!");
                     errorHandler.handleError(
                             "Failed to decode a stun message!",
                             ex);

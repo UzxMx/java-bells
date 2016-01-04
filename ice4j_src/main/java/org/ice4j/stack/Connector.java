@@ -201,6 +201,10 @@ class Connector
                 }
 
                 localSock.receive(packet);
+//                logger.finest("------Received message------");
+//                logger.finest(packet.getAddress() + ":" + packet.getPort() + " -> " + localSock.getLocalAddress() + ":" + localSock.getLocalAddress());
+//                logger.finest(new String(packet.getData()));
+//                logger.finest("------end received message------");
 
                 //get lost if we are no longer running.
                 if(!running)
@@ -314,6 +318,11 @@ class Connector
     {
         DatagramPacket datagramPacket
             = new DatagramPacket(message, 0, message.length, address);
+        
+//        logger.finest("------Start sending message------");
+//        logger.finest(sock.getLocalAddress() + ":" + sock.getLocalPort() + " -> " + address.getAddress() + ":" + address.getPort());
+//        logger.finest(new String(message));
+//        logger.finest("------end sending message------");
 
         sock.send(datagramPacket);
     }

@@ -223,6 +223,7 @@ class ConnectivityCheckClient
             int maxWaitInterval,
             int maxRetransmissions)
     {
+    	logger.fine("Start Check For Pair: " + candidatePair);
         LocalCandidate localCandidate = candidatePair.getLocalCandidate();
         //we don't need to do a canReach() verification here as it has been
         //already verified during the gathering process.

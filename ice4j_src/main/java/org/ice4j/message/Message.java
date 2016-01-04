@@ -1335,6 +1335,44 @@ public abstract class Message
             stringBuilder.append(TransactionID.toString(transactionID));
         }
         stringBuilder.append("]");
+        
+        stringBuilder.append("\n------Start attributes------\n");
+        for (Attribute attribute : attributes.values()) {
+        	stringBuilder.append(attribute.getName());
+        	stringBuilder.append(": length: ");
+        	stringBuilder.append((int) attribute.getDataLength());
+        	stringBuilder.append(": ");
+        	if (attribute instanceof XorMappedAddressAttribute) {
+        		XorMappedAddressAttribute attr = (XorMappedAddressAttribute) attribute;
+        		stringBuilder.append(attr.getAddress(this.transactionID));
+        	} else if (attribute instanceof SoftwareAttribute) {
+        		SoftwareAttribute attr = (SoftwareAttribute) attribute;
+        		stringBuilder.append(new String(attr.getSoftware()));
+        	} else if (attribute instanceof FingerprintAttribute) {
+        		FingerprintAttribute attr = (FingerprintAttribute) attribute;
+        		stringBuilder.append(attr.getChecksum());
+        	} else if (attribute instanceof PriorityAttribute) {
+        		PriorityAttribute attr = (PriorityAttribute) attribute;
+        		stringBuilder.append(attr.getPriority());
+        	} else if (attribute instanceof IceControllingAttribute) {
+        		IceControllingAttribute attr = (IceControllingAttribute) attribute;
+        		stringBuilder.append(attr.getTieBreaker());
+        	} else if (attribute instanceof UsernameAttribute) {
+        		UsernameAttribute attr = (UsernameAttribute) attribute;
+        		stringBuilder.append(new String(attr.getUsername()));
+        	} else if (attribute instanceof MessageIntegrityAttribute) {
+        		MessageIntegrityAttribute attr = (MessageIntegrityAttribute) attribute;
+        		stringBuilder.append(attr.getHmacSha1Content());
+        	} else if (attribute instanceof IceControlledAttribute) {
+        		IceControlledAttribute attr = (IceControlledAttribute) attribute;
+        		stringBuilder.append(attr.getTieBreaker());
+        	} else if (attribute instanceof UseCandidateAttribute) {
+        		UseCandidateAttribute attr = (UseCandidateAttribute) attribute;
+        	}
+        	stringBuilder.append("\n");
+        }
+        stringBuilder.append("------end attributes------\n");
+        
         return stringBuilder.toString();
     }
 }

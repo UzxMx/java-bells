@@ -51,6 +51,9 @@ public class JavaBellsSample {
 		ANSWER,
 		CALL_AND_ANSWER
 	}
+	
+	private final static java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger(JavaBellsSample.class.getName());
+	
 	protected final static Logger logger = LoggerFactory.getLogger(Logger.class);
 	
 	private static final String CALLER = "Caller";

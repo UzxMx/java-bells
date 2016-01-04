@@ -346,9 +346,12 @@ public class IceMediaStream
         {
             checkList.clear();
             createCheckList(checkList);
+            logger.fine("After creation checklist size: " + checkList.size());
 
             orderCheckList();
+            logger.fine("After order checklist size: " + checkList.size());
             pruneCheckList(checkList);
+            logger.fine("After prune checklist size: " + checkList.size());
             logger.finest("Checklist initialized.");
         }
     }

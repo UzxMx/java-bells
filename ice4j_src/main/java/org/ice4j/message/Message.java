@@ -1368,6 +1368,11 @@ public abstract class Message
         		stringBuilder.append(attr.getTieBreaker());
         	} else if (attribute instanceof UseCandidateAttribute) {
         		UseCandidateAttribute attr = (UseCandidateAttribute) attribute;
+        	} else if (attribute instanceof ErrorCodeAttribute) {
+        		ErrorCodeAttribute attr = (ErrorCodeAttribute) attribute;
+        		stringBuilder.append(ErrorCodeAttribute.getDefaultReasonPhrase(attr.getErrorCode()));
+        	} else if (attribute instanceof RealmAttribute) {
+        		RealmAttribute attr = (RealmAttribute) attribute;
         	}
         	stringBuilder.append("\n");
         }

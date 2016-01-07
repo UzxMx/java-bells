@@ -155,7 +155,7 @@ class MessageProcessor
                     logger.finest("------Received message------");
                     TransportAddress localTa = rawMessage.getLocalAddress();
                     TransportAddress remoteTa = rawMessage.getRemoteAddress();
-                    logger.finest(localTa.getAddress() + ":" + localTa.getPort() + " -> " + remoteTa.getAddress() + ":" + remoteTa.getPort());
+                    logger.finest(remoteTa.getAddress() + ":" + remoteTa.getPort() + " -> " + localTa.getAddress() + ":" + localTa.getPort());
                     logger.finest(stunMessage.toString());
                     logger.finest("------end received message------");
                 }

@@ -16,6 +16,7 @@ import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.Candidat
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.ContentPacketExtension;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.IceUdpTransportPacketExtension;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.JingleIQ;
+
 import org.ice4j.Transport;
 import org.ice4j.TransportAddress;
 import org.ice4j.ice.Agent;
@@ -27,6 +28,7 @@ import org.ice4j.ice.NominationStrategy;
 import org.ice4j.ice.RemoteCandidate;
 import org.ice4j.ice.harvest.StunCandidateHarvester;
 import org.ice4j.ice.harvest.TurnCandidateHarvester;
+import org.ice4j.security.LongTermCredential;
 //import org.ice4j.security.LongTermCredential;
 
 
@@ -66,6 +68,7 @@ public class IceAgent {
 			agent.setNominationStrategy(NominationStrategy.NOMINATE_HIGHEST_PRIO);
 		
 		TransportAddress ta = new TransportAddress("123.57.45.87", 3478, Transport.UDP);
+		TransportAddress shTa = new TransportAddress("139.196.45.112", 4567, Transport.UDP);
 
 		//stun and turn
 		// if( sta.stunAddresses != null )
@@ -73,7 +76,8 @@ public class IceAgent {
 		// 		System.out.println("stunAddresse: " + ta.toString());
 		// 		agent.addCandidateHarvester(new StunCandidateHarvester(ta) );
 		// 	}
-		agent.addCandidateHarvester(new StunCandidateHarvester(ta));
+//		agent.addCandidateHarvester(new StunCandidateHarvester(ta));
+//		agent.addCandidateHarvester(new StunCandidateHarvester(shTa));
 				
 		
 		//LongTermCredential ltr = new LongTermCredential("1234", "abcd" ); //generateNonce(5), generateNonce(15));
@@ -82,7 +86,8 @@ public class IceAgent {
 		// 		System.out.println("turnAddress:" + ta.toString());
 		// 		agent.addCandidateHarvester(new TurnCandidateHarvester(ta) );
 		// 	}
-		agent.addCandidateHarvester(new TurnCandidateHarvester(ta));
+		LongTermCredential longTermCredential = new LongTermCredential("uzxmx", "2581020");
+		agent.addCandidateHarvester(new TurnCandidateHarvester(ta, longTermCredential));
 	}
 	public void createStreams( Collection<String> streamnames ) throws IOException {
 		for( String s : streamnames ) {
